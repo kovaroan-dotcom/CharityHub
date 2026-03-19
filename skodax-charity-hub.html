@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Škoda X Charity Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --em:#0E3A2F;--em2:#174d3d;--em3:#1f6650;
+  --el:#78FAAE;--elp:#b5fcd3;--elw:#eafff4;
+  --am:#BA7517;--aml:#FAC775;--amw:#FAEEDA;--amd:#412402;
+  --tx:#1a1a1a;--txm:#555;--txh:#999;
+  --bd:rgba(0,0,0,.09);--bd2:rgba(0,0,0,.16);
+  --bg:#f2f3ef;--sf:#fff;--sf2:#eceee9;
+  --r1:8px;--r2:12px;--r3:16px
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;min-height:100vh}
+.wrap{max-width:860px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+/* HERO */
+.hero{background:var(--em);border-radius:var(--r3);padding:3rem 2.5rem 2.5rem;color:#fff;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.hero::before{content:'';position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;background:rgba(120,250,174,.07)}
+.hero::after{content:'';position:absolute;right:100px;bottom:-90px;width:180px;height:180px;border-radius:50%;background:rgba(120,250,174,.05)}
+.hero-badge{display:inline-block;background:rgba(120,250,174,.15);color:var(--el);font-size:11px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;padding:5px 13px;border-radius:20px;margin-bottom:1.1rem}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,6vw,3.2rem);line-height:1.08;font-weight:400;margin-bottom:.6rem}
+.hero h1 em{font-style:italic;color:var(--el)}
+.hero p{font-size:15px;opacity:.78;max-width:420px;line-height:1.65;font-weight:300}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2.2rem;flex-wrap:wrap;border-top:1px solid rgba(120,250,174,.2);padding-top:1.5rem}
+.hsv{font-size:1.7rem;font-weight:500;color:var(--el)}
+.hsl{font-size:11px;opacity:.6;margin-top:2px}
+
+/* MATCHING */
+.match{background:linear-gradient(135deg,var(--amw),var(--aml));border-radius:var(--r3);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.match-icon{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.match strong{display:block;font-size:14px;font-weight:500;color:var(--amd);margin-bottom:2px}
+.match span{font-size:12px;color:#633806}
+
+/* AMBASSADOR */
+.amb{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r3);padding:1.1rem 1.4rem;display:flex;align-items:flex-start;gap:1.1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.amb-left{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex-shrink:0}
+.amb-av{width:48px;height:48px;border-radius:50%;background:var(--em);color:var(--el);font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center}
+.amb-badge{font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;background:var(--elw);color:var(--em);padding:2px 7px;border-radius:8px;white-space:nowrap}
+.amb-body{flex:1;min-width:180px}
+.amb-lbl{font-size:10px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--txh);margin-bottom:3px}
+.amb-name{font-size:14px;font-weight:500;color:var(--em)}
+.amb-dept{font-size:11px;color:var(--txm);margin-bottom:.55rem}
+.amb-quote{font-size:13px;color:var(--txm);line-height:1.6;font-style:italic;border-left:3px solid var(--el);padding-left:.75rem}
+.amb-picks{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.65rem;align-items:center}
+.amb-pick{font-size:10px;font-weight:500;background:var(--elw);color:var(--em);padding:3px 10px;border-radius:10px;cursor:pointer;border:none;font-family:inherit;transition:background .15s}
+.amb-pick:hover{background:var(--elp)}
+.amb-hint{font-size:11px;color:var(--txh);font-style:italic}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:2rem;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:.65rem 1.1rem;font-size:13px;font-weight:400;color:var(--txm);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;margin-bottom:-1px;transition:color .15s;font-family:inherit}
+.tab:hover{color:var(--tx)}
+.tab.on{color:var(--em);border-bottom-color:var(--el);font-weight:500}
+
+/* PANELS — critical: hidden by default, block when .on */
+.panel{display:none}
+.panel.on{display:block}
+
+.sec{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--txh);margin-bottom:1rem}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r3);padding:1.5rem;margin-bottom:1rem}
+
+/* THERMO */
+.thl{display:grid;grid-template-columns:54px 1fr;gap:1.5rem;align-items:center}
+@media(max-width:480px){.thl{grid-template-columns:1fr}}
+.tht{font-family:'DM Serif Display',serif;font-size:1.25rem;font-weight:400;margin-bottom:3px}
+.ths{font-size:12px;color:var(--txm);margin-bottom:1rem}
+.amtr{display:flex;align-items:baseline;gap:6px;margin-bottom:.5rem}
+.amn{font-size:2rem;font-weight:500;color:var(--em)}
+.amo{font-size:14px;color:var(--txm)}
+.pb-bg{background:var(--sf2);border-radius:20px;height:8px;overflow:hidden;margin-bottom:5px}
+.pb{height:100%;border-radius:20px;background:var(--em);transition:width .8s}
+.pm{display:flex;justify-content:space-between;font-size:11px;color:var(--txh);margin-bottom:.8rem}
+.pill{display:inline-flex;align-items:center;gap:5px;background:var(--elw);color:var(--em);font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px}
+.brow{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.btn{padding:8px 16px;font-size:12px;font-weight:500;border-radius:var(--r1);border:1px solid var(--em);color:var(--em);background:transparent;cursor:pointer;transition:background .15s;font-family:inherit}
+.btn:hover{background:var(--elw)}
+.btn.p{background:var(--em);color:var(--el);border-color:var(--em)}
+.btn.p:hover{background:var(--em2)}
+.btn.d{border-color:#A32D2D;color:#A32D2D}
+.btn.d:hover{background:#FCEBEB}
+
+/* VOTE */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem}
+.vc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r3);padding:1.1rem;cursor:pointer;position:relative;transition:border-color .15s}
+.vc:hover{border-color:var(--bd2)}
+.vc.on{border:1.5px solid var(--em);background:var(--elw)}
+.vtag{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--em);background:var(--elp);padding:3px 8px;border-radius:10px;display:inline-block;margin-bottom:.6rem}
+.vc h3{font-size:13px;font-weight:500;margin-bottom:.3rem;line-height:1.35}
+.vc p{font-size:12px;color:var(--txm);line-height:1.5;margin-bottom:.8rem}
+.vbb{height:4px;background:var(--sf2);border-radius:4px;overflow:hidden;margin-bottom:4px}
+.vbf{height:100%;background:var(--em);border-radius:4px;transition:width .4s}
+.vn{font-size:11px;color:var(--txh)}
+.vbtn{width:100%;margin-top:.6rem;padding:7px;font-size:12px;font-weight:500;border-radius:var(--r1);border:1px solid var(--em);color:var(--em);background:transparent;cursor:pointer;transition:background .15s;font-family:inherit}
+.vbtn:hover{background:var(--elw)}
+.vc.on .vbtn{background:var(--em);color:var(--el)}
+.chk{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--em);display:none;align-items:center;justify-content:center}
+.vc.on .chk{display:flex}
+.vhint{font-size:11px;color:var(--txh);margin-top:.75rem}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:32px 1fr;gap:.75rem;padding:.9rem 0;border-bottom:1px solid var(--bd);align-items:start}
+.step:last-child{border-bottom:none}
+.snum{width:28px;height:28px;border-radius:50%;background:var(--em);color:var(--el);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step strong{display:block;font-size:14px;font-weight:500;margin-bottom:2px}
+.step span{font-size:13px;color:var(--txm);line-height:1.55}
+
+/* QR */
+.qrl{display:grid;grid-template-columns:96px 1fr;gap:1.5rem;align-items:center}
+@media(max-width:400px){.qrl{grid-template-columns:1fr}}
+.qrb{width:96px;height:96px;border-radius:var(--r2);background:var(--sf2);display:flex;align-items:center;justify-content:center}
+.qri strong{display:block;font-size:14px;font-weight:500;margin-bottom:.3rem}
+.qri p{font-size:12px;color:var(--txm);line-height:1.5;margin-bottom:.7rem}
+
+/* HISTORY */
+.hlist{display:flex;flex-direction:column;gap:.6rem}
+.hi{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r1);padding:.8rem 1rem;display:flex;align-items:center;gap:.75rem}
+.hdot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.hm{flex:1}
+.hm strong{font-size:13px;font-weight:500;display:block}
+.hm span{font-size:11px;color:var(--txh)}
+.ha{font-size:14px;font-weight:500;color:var(--em);white-space:nowrap}
+.tots{background:var(--em);border-radius:var(--r2);padding:1rem 1.25rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.tv{font-size:1.3rem;font-weight:500;color:var(--el)}
+.tl{font-size:11px;color:rgba(255,255,255,.55)}
+
+/* FORMS */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:520px){.fg{grid-template-columns:1fr}}
+.ff{grid-column:1/-1}
+.lbl{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--txh);display:block;margin-bottom:.35rem}
+.fi{width:100%;padding:9px 12px;font-size:14px;border:1px solid var(--bd);border-radius:var(--r1);background:var(--sf2);font-family:inherit;outline:none;transition:border-color .15s;color:var(--tx)}
+.fi:focus{border-color:var(--em);background:#fff}
+.err{display:none;font-size:12px;color:#A32D2D;background:#FCEBEB;padding:.6rem .8rem;border-radius:var(--r1)}
+
+/* ADMIN */
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.75rem;margin-bottom:1.5rem}
+.ac{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r3);padding:1.1rem}
+.al{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--txh);margin-bottom:.3rem}
+.av{font-size:1.5rem;font-weight:500;color:var(--em)}
+.as{font-size:12px;color:var(--txm);margin-top:1px}
+.sl{display:flex;flex-direction:column;gap:.6rem}
+.sr{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r2);padding:.9rem 1rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.si{flex:1;min-width:140px}
+.si strong{font-size:13px;font-weight:500;display:block}
+.si span{font-size:11px;color:var(--txh)}
+.stag{display:inline-block;font-size:10px;font-weight:500;padding:3px 9px;border-radius:10px;letter-spacing:.06em}
+.s-a{background:var(--elw);color:var(--em)}
+.s-v{background:var(--amw);color:var(--amd)}
+.s-d{background:var(--sf2);color:var(--txh)}
+
+/* MODALS */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:1rem}
+.mo.on{display:flex}
+.md{background:var(--sf);border-radius:var(--r3);padding:2rem;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.mc{position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--txm)}
+.ao{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-bottom:.8rem}
+.aopt{padding:8px 4px;font-size:13px;font-weight:500;text-align:center;border-radius:var(--r1);border:1px solid var(--bd);cursor:pointer;transition:all .15s;background:var(--sf);font-family:inherit}
+.aopt:hover{border-color:var(--em);color:var(--em)}
+.aopt.on{background:var(--em);color:var(--el);border-color:var(--em)}
+.mn{background:var(--amw);border-radius:var(--r1);padding:.7rem .9rem;font-size:12px;color:#633806;margin-bottom:1rem}
+.mn strong{color:var(--amd)}
+
+footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;font-size:11px;color:var(--txh)}
+footer strong{color:var(--em)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">Škoda X · Charity Hub</div>
+  <h1>Spolu<br><em>měníme</em> svět</h1>
+  <p>Každý měsíc, jedna sbírka, celá firma. Hlasujte, přispívejte a sledujte dopad vaší pomoci.</p>
+  <div class="hero-stats">
+    <div><div class="hsv" id="stat-c">47</div><div class="hsl">přispěvatelů tento měsíc</div></div>
+    <div><div class="hsv">23 400 Kč</div><div class="hsl">celkem vybráno</div></div>
+    <div><div class="hsv">6</div><div class="hsl">podpořených sbírek</div></div>
+  </div>
+</header>
+
+<!-- MATCHING -->
+<div class="match">
+  <div class="match-icon">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L13.5 8H20L14.5 12L16.5 18L11 14L5.5 18L7.5 12L2 8H8.5L11 2Z" fill="#BA7517"/></svg>
+  </div>
+  <div>
+    <strong>Firma zdvojnásobuje každý příspěvek</strong>
+    <span>Pravidlo 1:1 — za každou vaší korunu přidá Škoda X další. Váš příspěvek má dvojnásobný dopad.</span>
+  </div>
+</div>
+
+<!-- AMBASSADOR -->
+<div class="amb" id="amb-strip">
+  <div class="amb-left">
+    <div class="amb-av" id="amb-av">KN</div>
+    <div class="amb-badge">Kurátor</div>
+  </div>
+  <div class="amb-body">
+    <div class="amb-lbl" id="amb-lbl">Ambasador měsíce · Červen 2026</div>
+    <div class="amb-name" id="amb-name">Karolína Nováková</div>
+    <div class="amb-dept" id="amb-dept">People &amp; Culture · Praha</div>
+    <div class="amb-quote" id="amb-quote">Mám v rodině dítě s autismem a vím, jak moc asistenční pes může změnit celý život rodiny. Proto jsem navrhla právě tyto tři sbírky.</div>
+    <div class="amb-picks" id="amb-picks">
+      <span class="amb-hint">Karolína navrhla pro hlasování →</span>
+      <button class="amb-pick" onclick="showTab('hlasovani')">Klára — operace páteře</button>
+      <button class="amb-pick" onclick="showTab('hlasovani')">Školka pro komunitu</button>
+      <button class="amb-pick" onclick="showTab('hlasovani')">Vozík pro Radka</button>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab on"  data-tab="sbirka">Aktuální sbírka</button>
+  <button class="tab"     data-tab="hlasovani">Hlasování</button>
+  <button class="tab"     data-tab="navrh">Navrhnout sbírku</button>
+  <button class="tab"     data-tab="jak">Jak to funguje</button>
+  <button class="tab"     data-tab="historie">Historie</button>
+  <button class="tab"     data-tab="admin" style="margin-left:auto;color:var(--txh)">⚙ Admin</button>
+</div>
+
+<!-- PANEL: SBÍRKA -->
+<div class="panel on" id="tab-sbirka">
+  <div class="sec">Červen 2026 · Aktivní sbírka</div>
+  <div class="card">
+    <div class="thl">
+      <div style="display:flex;justify-content:center">
+        <svg width="44" height="165" viewBox="0 0 44 165">
+          <rect x="17" y="10" width="10" height="112" rx="5" fill="#eafff4"/>
+          <rect x="17" y="10" width="10" height="112" rx="5" fill="none" stroke="#b5fcd3" stroke-width="1"/>
+          <rect id="tfill" x="17.5" y="47" width="9" height="74" rx="4" fill="#0E3A2F"/>
+          <circle cx="22" cy="136" r="13" fill="#0E3A2F"/>
+          <circle cx="22" cy="136" r="9" fill="#78FAAE"/>
+          <line x1="12" y1="10" x2="15" y2="10" stroke="#b5fcd3" stroke-width="1"/>
+          <line x1="12" y1="47" x2="15" y2="47" stroke="#b5fcd3" stroke-width="1"/>
+          <line x1="12" y1="85" x2="15" y2="85" stroke="#b5fcd3" stroke-width="1"/>
+          <text x="11" y="13" font-size="7" fill="#888" text-anchor="end" font-family="DM Sans">30k</text>
+          <text x="11" y="50" font-size="7" fill="#888" text-anchor="end" font-family="DM Sans">15k</text>
+          <text x="11" y="88" font-size="7" fill="#888" text-anchor="end" font-family="DM Sans">7k</text>
+        </svg>
+      </div>
+      <div>
+        <div class="tht" id="act-title">Matyáš a jeho asistenční pes</div>
+        <div class="ths" id="act-sub">Donio · Pomoc pro chlapce s autismem</div>
+        <div class="amtr">
+          <span class="amn" id="act-amt">21 200 Kč</span>
+          <span class="amo">z <span id="act-tgt">30 000</span> Kč</span>
+        </div>
+        <div class="pb-bg"><div class="pb" id="pb" style="width:71%"></div></div>
+        <div class="pm"><span id="pct">71 % splněno</span><span>zaměstnanci + matching</span></div>
+        <div class="pill">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#0E3A2F" stroke-width="1"/><path d="M5.5 3V5.5L7 7" stroke="#0E3A2F" stroke-width="1" stroke-linecap="round"/></svg>
+          11 dní do konce měsíce
+        </div>
+        <div class="brow">
+          <button class="btn p" onclick="openContrib()">+ Přispět</button>
+          <button class="btn" onclick="openModal('qr-modal')">QR kód</button>
+          <button class="btn" id="act-link" onclick="window.open('https://donio.cz','_blank')">Otevřít na Donio ↗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL: HLASOVÁNÍ -->
+<div class="panel" id="tab-hlasovani">
+  <div class="sec">Vyberte sbírku na příští měsíc · 3 kandidáti</div>
+  <div class="vgrid">
+    <div class="vc" id="vc0" onclick="vote(0)">
+      <div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="#78FAAE" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="vtag">Zdraví</div>
+      <h3>Klára — operace páteře</h3>
+      <p>18letá studentka potřebuje urgentní operaci. Bez ní hrozí trvalé ochrnutí.</p>
+      <div class="vbb"><div class="vbf" id="vb0" style="width:45%"></div></div>
+      <div class="vn" id="vn0">18 hlasů</div>
+      <button class="vbtn" id="vbtn0">Hlasovat</button>
+    </div>
+    <div class="vc" id="vc1" onclick="vote(1)">
+      <div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="#78FAAE" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="vtag">Vzdělání</div>
+      <h3>Školka pro komunitu na Slovensku</h3>
+      <p>Budujeme mateřskou školku v sociálně vyloučené komunitě pro 30 dětí.</p>
+      <div class="vbb"><div class="vbf" id="vb1" style="width:30%"></div></div>
+      <div class="vn" id="vn1">12 hlasů</div>
+      <button class="vbtn" id="vbtn1">Hlasovat</button>
+    </div>
+    <div class="vc" id="vc2" onclick="vote(2)">
+      <div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="#78FAAE" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="vtag">Mobilita</div>
+      <h3>Elektrický vozík pro Radka</h3>
+      <p>Radek (32) je po autonehodě — potřebuje elektrovozík pro návrat do práce.</p>
+      <div class="vbb"><div class="vbf" id="vb2" style="width:25%"></div></div>
+      <div class="vn" id="vn2">10 hlasů</div>
+      <button class="vbtn" id="vbtn2">Hlasovat</button>
+    </div>
+  </div>
+  <p class="vhint">Hlasování končí 25. 6. Sbírka s nejvíce hlasy bude podpořena celou firmou v červenci.</p>
+</div>
+
+<!-- PANEL: NAVRHNOUT -->
+<div class="panel" id="tab-navrh">
+  <div class="sec">Navrhnout sbírku · vaše tipy pro příští hlasování</div>
+  <div class="card" style="margin-bottom:1rem">
+    <p style="font-size:13px;color:var(--txm);margin-bottom:1.2rem;line-height:1.6">Znáte příběh, který si zaslouží podporu? Navrhněte sbírku — pokud dostane dost hlasů v interním schválení, dostane se do příštího hlasování celé firmy.</p>
+    <div style="display:flex;flex-direction:column;gap:.85rem">
+      <div><label class="lbl">Název sbírky *</label><input class="fi" type="text" id="n-tit" placeholder="např. Lukáš — nová protéza"/></div>
+      <div><label class="lbl">Odkaz (Donio / Dobrý Anděl) *</label><input class="fi" type="url" id="n-url" placeholder="https://donio.cz/..."/></div>
+      <div><label class="lbl">Kategorie</label>
+        <select class="fi" id="n-cat" style="cursor:pointer">
+          <option value="">— vyberte —</option>
+          <option>Zdraví</option><option>Vzdělání</option><option>Mobilita</option><option>Zvířata</option><option>Rodina</option><option>Komunitní projekty</option><option>Jiné</option>
+        </select>
+      </div>
+      <div><label class="lbl">Proč tato sbírka? (volitelně)</label><textarea class="fi" id="n-why" rows="3" style="resize:vertical" placeholder="Osobní důvod…"></textarea></div>
+      <div><label class="lbl">Vaše jméno (volitelně)</label><input class="fi" type="text" id="n-who" placeholder="Anonymní je ok"/></div>
+      <div class="err" id="n-err"></div>
+      <button class="btn p" style="align-self:flex-start;padding:10px 22px;font-size:13px" onclick="submitNom()">Odeslat návrh</button>
+    </div>
+  </div>
+  <div class="sec" style="margin-top:1.5rem">Přijaté návrhy od kolegů</div>
+  <div id="nom-list" style="display:flex;flex-direction:column;gap:.6rem"></div>
+  <p id="nom-empty" style="font-size:13px;color:var(--txh);margin-top:.5rem">Zatím žádné návrhy. Buďte první!</p>
+</div>
+
+<!-- PANEL: JAK TO FUNGUJE -->
+<div class="panel" id="tab-jak">
+  <div class="sec">Jak Škoda X Charity Hub funguje</div>
+  <div class="card">
+    <div class="steps">
+      <div class="step"><div class="snum">1</div><div><strong>Hlasujete o sbírce</strong><span>Každý měsíc 3 příběhy — kurátor měsíce je vybírá, vy hlasujete. Sbírka s nejvíce hlasy vyhrává.</span></div></div>
+      <div class="step"><div class="snum">2</div><div><strong>Přispíváte libovolnou částkou</strong><span>QR kód, odkaz nebo tlačítko Přispět. Bez minimální výše — i 20 Kč se počítá.</span></div></div>
+      <div class="step"><div class="snum">3</div><div><strong>Firma příspěvky zdvojnásobí</strong><span>Za každou vaší korunu přidá Škoda X druhou. Automaticky, na konci měsíce.</span></div></div>
+      <div class="step"><div class="snum">4</div><div><strong>Sledujete teploměr v reálném čase</strong><span>Vidíte, jak se plníme. Průběžné updaty v Teams/Slacku.</span></div></div>
+      <div class="step"><div class="snum">5</div><div><strong>Na konci měsíce slavíme</strong><span>Certifikát o daru, zpráva o dopadu, nové kolo hlasování.</span></div></div>
+    </div>
+  </div>
+  <div class="sec" style="margin-top:1.5rem">QR kód na tisk</div>
+  <div class="card">
+    <div class="qrl">
+      <div class="qrb">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect x="4" y="4" width="24" height="24" rx="2" fill="none" stroke="#0E3A2F" stroke-width="1.5"/><rect x="9" y="9" width="14" height="14" rx="1" fill="#0E3A2F"/>
+          <rect x="36" y="4" width="24" height="24" rx="2" fill="none" stroke="#0E3A2F" stroke-width="1.5"/><rect x="41" y="9" width="14" height="14" rx="1" fill="#0E3A2F"/>
+          <rect x="4" y="36" width="24" height="24" rx="2" fill="none" stroke="#0E3A2F" stroke-width="1.5"/><rect x="9" y="41" width="14" height="14" rx="1" fill="#0E3A2F"/>
+          <rect x="36" y="36" width="10" height="10" rx="1" fill="#0E3A2F"/><rect x="50" y="36" width="10" height="10" rx="1" fill="#0E3A2F"/>
+          <rect x="36" y="50" width="10" height="10" rx="1" fill="#0E3A2F"/><rect x="50" y="50" width="10" height="10" rx="1" fill="#0E3A2F"/>
+        </svg>
+      </div>
+      <div class="qri">
+        <strong>QR kód pro platbu</strong>
+        <p>Vytiskněte na A5 a přilepte na kávovar nebo do výtahu. Jeden sken = rychlý příspěvek.</p>
+        <button class="btn" onclick="alert('V ostrém provozu zde bude QR kód z Donia.')">Stáhnout QR (A5)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL: HISTORIE -->
+<div class="panel" id="tab-historie">
+  <div class="sec">Dokončené sbírky · celkem 5</div>
+  <div class="hlist">
+    <div class="hi"><div class="hdot" style="background:var(--em)"></div><div class="hm"><strong>Honzík — sluchadla</strong><span>Květen 2026 · 52 přispěvatelů · Donio · Cíl splněn ✓</span></div><div class="ha">18 400 Kč</div></div>
+    <div class="hi"><div class="hdot" style="background:var(--em)"></div><div class="hm"><strong>Azylový dům Praha 9</strong><span>Duben 2026 · 41 přispěvatelů · Dobrý Anděl · Cíl splněn ✓</span></div><div class="ha">14 200 Kč</div></div>
+    <div class="hi"><div class="hdot" style="background:var(--em)"></div><div class="hm"><strong>Anička — rehabilitace po úrazu</strong><span>Březen 2026 · 38 přispěvatelů · Donio · Cíl splněn ✓</span></div><div class="ha">22 600 Kč</div></div>
+    <div class="hi"><div class="hdot" style="background:var(--el)"></div><div class="hm"><strong>Psí záchranná stanice Brno</strong><span>Únor 2026 · 29 přispěvatelů · Donio</span></div><div class="ha">9 800 Kč</div></div>
+    <div class="hi"><div class="hdot" style="background:var(--elp)"></div><div class="hm"><strong>Tomáš — školné na výtvarnou školu</strong><span>Leden 2026 · 24 přispěvatelů · Donio · Startovní sbírka</span></div><div class="ha">7 400 Kč</div></div>
+  </div>
+  <div class="tots">
+    <div><div class="tv">72 400 Kč</div><div class="tl">celková suma vč. matchingu</div></div>
+    <div><div class="tv">184</div><div class="tl">celkem příspěvků</div></div>
+    <div><div class="tv">5</div><div class="tl">splněných cílů</div></div>
+  </div>
+</div>
+
+<!-- PANEL: ADMIN -->
+<div class="panel" id="tab-admin">
+  <div id="adm-login">
+    <div class="sec">Admin přístup</div>
+    <div class="card" style="max-width:340px;margin:0 auto">
+      <p style="font-size:13px;color:var(--txm);margin-bottom:1.2rem">Pro přístup zadejte heslo.</p>
+      <label class="lbl">Heslo</label>
+      <input class="fi" type="password" id="adm-pw" placeholder="••••••••" style="margin-bottom:.75rem" onkeydown="if(event.key==='Enter')adminLogin()"/>
+      <div class="err" id="adm-err" style="margin-bottom:.75rem"></div>
+      <button class="btn p" onclick="adminLogin()">Přihlásit se</button>
+    </div>
+  </div>
+
+  <div id="adm-dash" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+      <div class="sec" style="margin-bottom:0">Přehled · Červen 2026</div>
+      <button class="btn d" style="font-size:11px;padding:5px 12px" onclick="adminLogout()">Odhlásit se</button>
+    </div>
+    <div class="ag">
+      <div class="ac"><div class="al">Vybráno tento měsíc</div><div class="av">21 200 Kč</div><div class="as">+ 21 200 Kč matching</div></div>
+      <div class="ac"><div class="al">Přispěvatelé</div><div class="av">47</div><div class="as">ze 180 zaměstnanců</div></div>
+      <div class="ac"><div class="al">Plnění cíle</div><div class="av">71 %</div><div class="as">21 200 z 30 000 Kč</div></div>
+      <div class="ac"><div class="al">Zbývá dní</div><div class="av">11</div><div class="as">do konce měsíce</div></div>
+    </div>
+
+    <div class="sec">Správa sbírek</div>
+    <div class="sl" id="adm-sbirky" style="margin-bottom:1.5rem"></div>
+
+    <div class="sec" style="margin-top:1.5rem">Kurátor sbírek — ambasador měsíce</div>
+    <div class="card" style="margin-bottom:1.5rem">
+      <p style="font-size:13px;color:var(--txm);margin-bottom:1rem;line-height:1.6">Každý měsíc vybírá 3 kandidátní sbírky někdo jiný. Ambasador nám je sdělí osobně nebo mailem — vy je zadáte sem.</p>
+      <div class="fg">
+        <div><label class="lbl">Jméno *</label><input class="fi" type="text" id="ai-name" placeholder="Jana Dvořáková"/></div>
+        <div><label class="lbl">Oddělení · lokace</label><input class="fi" type="text" id="ai-dept" placeholder="Marketing · Brno"/></div>
+        <div class="ff"><label class="lbl">Proč vybral/a právě tyto sbírky?</label><textarea class="fi" id="ai-quote" rows="3" style="resize:vertical" placeholder="Citát od ambasadora…"></textarea></div>
+        <div><label class="lbl">Měsíc (popisek)</label><input class="fi" type="text" id="ai-month" placeholder="Červen 2026"/></div>
+        <div class="ff">
+          <label class="lbl">Názvy 3 navržených sbírek</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+            <input class="fi" type="text" id="ai-p1" placeholder="Sbírka 1"/>
+            <input class="fi" type="text" id="ai-p2" placeholder="Sbírka 2"/>
+            <input class="fi" type="text" id="ai-p3" placeholder="Sbírka 3"/>
+          </div>
+          <p style="font-size:11px;color:var(--txh);margin-top:.35rem">Zadejte je pak také níže se stavem „V hlasování".</p>
+        </div>
+      </div>
+      <div class="brow" style="margin-top:1rem">
+        <button class="btn p" onclick="saveAmb()">Uložit ambasadora</button>
+        <button class="btn d" onclick="document.getElementById('amb-strip').style.display='none'">Skrýt pruh</button>
+      </div>
+    </div>
+
+    <div class="sec">Přidat novou sbírku</div>
+    <div class="card">
+      <div class="fg">
+        <div class="ff"><label class="lbl">Název sbírky *</label><input class="fi" type="text" id="ai-tit" placeholder="Jméno / popis"/></div>
+        <div><label class="lbl">Organizace</label><select class="fi" id="ai-org" style="cursor:pointer"><option>Donio</option><option>Dobrý Anděl</option><option>Jiná</option></select></div>
+        <div><label class="lbl">Kategorie</label><select class="fi" id="ai-cat" style="cursor:pointer"><option>Zdraví</option><option>Vzdělání</option><option>Mobilita</option><option>Zvířata</option><option>Rodina</option><option>Komunitní projekty</option><option>Jiné</option></select></div>
+        <div><label class="lbl">Cíl (Kč) *</label><input class="fi" type="number" id="ai-goal" placeholder="30000" min="1"/></div>
+        <div><label class="lbl">Měsíc</label><input class="fi" type="month" id="ai-month2"/></div>
+        <div class="ff"><label class="lbl">Odkaz *</label><input class="fi" type="url" id="ai-url" placeholder="https://donio.cz/..."/></div>
+        <div class="ff"><label class="lbl">Popis / příběh</label><textarea class="fi" id="ai-desc" rows="3" style="resize:vertical" placeholder="Krátký příběh…"></textarea></div>
+        <div class="ff"><label class="lbl">Stav</label>
+          <select class="fi" id="ai-status" style="cursor:pointer">
+            <option value="active">Aktivní (aktuální sbírka)</option>
+            <option value="vote">V hlasování</option>
+            <option value="done">Dokončená</option>
+          </select>
+        </div>
+      </div>
+      <div class="err" id="ai-err" style="margin-top:.75rem"></div>
+      <div class="brow" style="margin-top:1rem">
+        <button class="btn p" onclick="addSbirka()">Přidat sbírku</button>
+        <button class="btn" onclick="clearForm()">Vymazat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span><strong>Škoda X Charity Hub</strong> · 2026</span>
+  <span>Škoda X · People &amp; Culture</span>
+</footer>
+</div>
+
+<!-- CONTRIB MODAL -->
+<div class="mo" id="contrib-modal">
+  <div class="md" style="max-width:380px">
+    <button class="mc" onclick="closeModal('contrib-modal')">✕</button>
+    <h2 style="font-family:'DM Serif Display',serif;font-weight:400;margin-bottom:.25rem">Přispět na Matyáše</h2>
+    <p style="font-size:13px;color:var(--txm);margin-bottom:1.2rem">Asistenční pes · Donio</p>
+    <div class="ao">
+      <div class="aopt" onclick="pickAmt(this,50)">50 Kč</div>
+      <div class="aopt on" onclick="pickAmt(this,200)">200 Kč</div>
+      <div class="aopt" onclick="pickAmt(this,500)">500 Kč</div>
+      <div class="aopt" onclick="pickAmt(this,1000)">1 000 Kč</div>
+    </div>
+    <input class="fi" type="number" id="c-amt" placeholder="Vlastní částka (Kč)" min="1" style="margin-bottom:.7rem"/>
+    <div class="mn"><strong>Matching 1:1:</strong> Vaše <span id="u-amt">200 Kč</span> → firma přidá <span id="m-amt">200 Kč</span> → celkem <strong id="t-amt">400 Kč</strong>.</div>
+    <div class="brow">
+      <button class="btn p" onclick="confirmContrib()">Přejít na platbu (Donio)</button>
+      <button class="btn" onclick="closeModal('contrib-modal')">Zrušit</button>
+    </div>
+  </div>
+</div>
+
+<!-- QR MODAL -->
+<div class="mo" id="qr-modal">
+  <div class="md" style="max-width:320px;text-align:center">
+    <button class="mc" onclick="closeModal('qr-modal')">✕</button>
+    <h2 style="font-family:'DM Serif Display',serif;font-weight:400;margin-bottom:.5rem">QR kód pro platbu</h2>
+    <p style="font-size:12px;color:var(--txm);margin-bottom:1.2rem">Naskenujte pro rychlý příspěvek</p>
+    <div style="display:flex;justify-content:center;margin-bottom:1.2rem">
+      <svg width="140" height="140" viewBox="0 0 64 64" fill="none">
+        <rect x="4" y="4" width="24" height="24" rx="2" fill="none" stroke="#0E3A2F" stroke-width="1.5"/><rect x="9" y="9" width="14" height="14" rx="1" fill="#0E3A2F"/>
+        <rect x="36" y="4" width="24" height="24" rx="2" fill="none" stroke="#0E3A2F" stroke-width="1.5"/><rect x="41" y="9" width="14" height="14" rx="1" fill="#0E3A2F"/>
+        <rect x="4" y="36" width="24" height="24" rx="2" fill="none" stroke="#0E3A2F" stroke-width="1.5"/><rect x="9" y="41" width="14" height="14" rx="1" fill="#0E3A2F"/>
+        <rect x="36" y="36" width="10" height="10" rx="1" fill="#0E3A2F"/><rect x="50" y="36" width="10" height="10" rx="1" fill="#0E3A2F"/>
+        <rect x="36" y="50" width="10" height="10" rx="1" fill="#0E3A2F"/><rect x="50" y="50" width="10" height="10" rx="1" fill="#0E3A2F"/>
+      </svg>
+    </div>
+    <p style="font-size:12px;color:var(--txm);margin-bottom:1rem">V ostrém provozu zde bude platební QR z Donia.</p>
+    <button class="btn" onclick="closeModal('qr-modal')">Zavřít</button>
+  </div>
+</div>
+
+<script>
+// ── TABS ──────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var name = this.getAttribute('data-tab');
+    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('on'); });
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
+    this.classList.add('on');
+    var panel = document.getElementById('tab-' + name);
+    if (panel) panel.classList.add('on');
+  });
+});
+
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('on'); });
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
+  var btn = document.querySelector('.tab[data-tab="' + name + '"]');
+  if (btn) btn.classList.add('on');
+  var panel = document.getElementById('tab-' + name);
+  if (panel) panel.classList.add('on');
+}
+
+// ── VOTING ────────────────────────────────────────────
+var cv = -1, vs = [18, 12, 10];
+function vote(i) {
+  if (cv === i) return;
+  if (cv >= 0) { vs[cv]--; document.getElementById('vc'+cv).classList.remove('on'); document.getElementById('vbtn'+cv).textContent = 'Hlasovat'; }
+  cv = i; vs[i]++;
+  document.getElementById('vc'+i).classList.add('on');
+  document.getElementById('vbtn'+i).textContent = 'Hlasováno ✓';
+  var total = vs[0]+vs[1]+vs[2];
+  for (var j=0; j<3; j++) {
+    var p = Math.round(vs[j]/total*100);
+    document.getElementById('vb'+j).style.width = p+'%';
+    document.getElementById('vn'+j).textContent = vs[j]+' hlasů';
+  }
+}
+
+// ── CONTRIB ───────────────────────────────────────────
+var selAmt = 200, contributed = 21200, target = 30000;
+
+function openContrib() { openModal('contrib-modal'); updMatch(200); }
+function openModal(id) { document.getElementById(id).classList.add('on'); }
+function closeModal(id) { document.getElementById(id).classList.remove('on'); }
+
+function pickAmt(el, v) {
+  document.querySelectorAll('.aopt').forEach(function(o) { o.classList.remove('on'); });
+  el.classList.add('on'); selAmt = v;
+  document.getElementById('c-amt').value = '';
+  updMatch(v);
+}
+function updMatch(v) {
+  selAmt = v;
+  document.getElementById('u-amt').textContent = v.toLocaleString('cs-CZ')+' Kč';
+  document.getElementById('m-amt').textContent = v.toLocaleString('cs-CZ')+' Kč';
+  document.getElementById('t-amt').textContent = (v*2).toLocaleString('cs-CZ')+' Kč';
+}
+document.getElementById('c-amt').addEventListener('input', function() {
+  var v = parseInt(this.value);
+  if (v > 0) { document.querySelectorAll('.aopt').forEach(function(o){o.classList.remove('on');}); updMatch(v); }
+});
+function confirmContrib() {
+  var v = parseInt(document.getElementById('c-amt').value) || selAmt;
+  if (!v || v <= 0) return;
+  contributed = Math.min(contributed+v, target);
+  var p = Math.min(Math.round(contributed/target*100), 100);
+  document.getElementById('act-amt').textContent = contributed.toLocaleString('cs-CZ')+' Kč';
+  document.getElementById('pb').style.width = p+'%';
+  document.getElementById('pct').textContent = p+' % splněno';
+  var fh = Math.round(74*p/100);
+  document.getElementById('tfill').setAttribute('y', 47+(74-fh));
+  document.getElementById('tfill').setAttribute('height', fh);
+  document.getElementById('stat-c').textContent = parseInt(document.getElementById('stat-c').textContent)+1;
+  closeModal('contrib-modal');
+  setTimeout(function(){ alert('Díky! Přesměrování na platbu přes Donio. (Demo)'); }, 200);
+}
+
+document.querySelectorAll('.mo').forEach(function(o) {
+  o.addEventListener('click', function(e) { if (e.target === o) o.classList.remove('on'); });
+});
+
+// ── NOMINATIONS ───────────────────────────────────────
+var noms = [];
+var cCol = {Zdraví:'#eafff4',Vzdělání:'#E6F1FB',Mobilita:'#FAEEDA',Zvířata:'#EAF3DE',Rodina:'#FBEAF0','Komunitní projekty':'#EEEDFE',Jiné:'#F1EFE8'};
+var cTxt = {Zdraví:'#0E3A2F',Vzdělání:'#185FA5',Mobilita:'#854F0B',Zvířata:'#3B6D11',Rodina:'#993556','Komunitní projekty':'#534AB7',Jiné:'#5F5E5A'};
+
+function submitNom() {
+  var t = document.getElementById('n-tit').value.trim();
+  var u = document.getElementById('n-url').value.trim();
+  var c = document.getElementById('n-cat').value;
+  var w = document.getElementById('n-why').value.trim();
+  var n = document.getElementById('n-who').value.trim();
+  var e = document.getElementById('n-err');
+  e.style.display = 'none';
+  if (!t) { e.textContent = 'Vyplňte název sbírky.'; e.style.display = 'block'; return; }
+  if (!u) { e.textContent = 'Vyplňte odkaz na sbírku.'; e.style.display = 'block'; return; }
+  noms.push({t:t,u:u,c:c||'Jiné',w:w,n:n||'Anonymní',d:new Date()});
+  renderNoms();
+  ['n-tit','n-url','n-cat','n-why','n-who'].forEach(function(id){ document.getElementById(id).value=''; });
+}
+function renderNoms() {
+  var list = document.getElementById('nom-list');
+  var empty = document.getElementById('nom-empty');
+  if (!noms.length) { list.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = noms.map(function(n) {
+    var bg = cCol[n.c]||'#F1EFE8', tc = cTxt[n.c]||'#5F5E5A';
+    var ts = n.d.toLocaleDateString('cs-CZ',{day:'numeric',month:'long'})+' · '+n.d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});
+    return '<div class="hi" style="flex-direction:column;align-items:flex-start;gap:.5rem">'
+      +'<div style="display:flex;align-items:center;gap:.6rem;width:100%;flex-wrap:wrap">'
+      +'<span style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;background:'+bg+';color:'+tc+';padding:3px 9px;border-radius:10px">'+n.c+'</span>'
+      +'<strong style="font-size:13px;flex:1">'+n.t+'</strong>'
+      +'<a href="'+n.u+'" target="_blank" style="font-size:11px;color:var(--em);text-decoration:none;white-space:nowrap">Otevřít ↗</a>'
+      +'</div>'
+      +(n.w?'<p style="font-size:12px;color:var(--txm);line-height:1.55;margin:0">'+n.w+'</p>':'')
+      +'<div style="font-size:11px;color:var(--txh)">Navrhl/a: '+n.n+' · '+ts+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ── ADMIN ─────────────────────────────────────────────
+var PW = 'skodax2026';
+var sbirky = [
+  {id:1,tit:'Matyáš a jeho asistenční pes',org:'Donio',cat:'Zdraví',goal:30000,month:'2026-06',url:'https://donio.cz',desc:'Pomoc pro chlapce s autismem',st:'active'},
+  {id:2,tit:'Klára — operace páteře',org:'Donio',cat:'Zdraví',goal:50000,month:'2026-07',url:'https://donio.cz',desc:'18letá studentka.',st:'vote'},
+  {id:3,tit:'Školka pro komunitu na Slovensku',org:'Donio',cat:'Vzdělání',goal:80000,month:'2026-07',url:'https://donio.cz',desc:'30 dětí.',st:'vote'},
+  {id:4,tit:'Elektrický vozík pro Radka',org:'Donio',cat:'Mobilita',goal:120000,month:'2026-07',url:'https://donio.cz',desc:'Po autonehodě.',st:'vote'}
+];
+var nid = 5;
+
+function adminLogin() {
+  var pw = document.getElementById('adm-pw').value;
+  var err = document.getElementById('adm-err');
+  if (pw === PW) {
+    document.getElementById('adm-login').style.display = 'none';
+    document.getElementById('adm-dash').style.display = 'block';
+    renderSbirky();
+    prefillAmb();
+    var now = new Date();
+    document.getElementById('ai-month2').value = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  } else { err.textContent = 'Nesprávné heslo.'; err.style.display = 'block'; }
+}
+function adminLogout() {
+  document.getElementById('adm-pw').value = '';
+  document.getElementById('adm-err').style.display = 'none';
+  document.getElementById('adm-login').style.display = 'block';
+  document.getElementById('adm-dash').style.display = 'none';
+}
+function prefillAmb() {
+  document.getElementById('ai-name').value = document.getElementById('amb-name').textContent;
+  document.getElementById('ai-dept').value = document.getElementById('amb-dept').textContent;
+  document.getElementById('ai-quote').value = document.getElementById('amb-quote').textContent;
+  document.getElementById('ai-month').value = document.getElementById('amb-lbl').textContent.replace('Ambasador měsíce · ','');
+  var picks = document.querySelectorAll('.amb-pick');
+  ['ai-p1','ai-p2','ai-p3'].forEach(function(id,i){ document.getElementById(id).value = picks[i]?picks[i].textContent:''; });
+}
+function saveAmb() {
+  var name = document.getElementById('ai-name').value.trim();
+  if (!name) { alert('Vyplňte jméno.'); return; }
+  var dept  = document.getElementById('ai-dept').value.trim();
+  var quote = document.getElementById('ai-quote').value.trim();
+  var month = document.getElementById('ai-month').value.trim();
+  var p1 = document.getElementById('ai-p1').value.trim();
+  var p2 = document.getElementById('ai-p2').value.trim();
+  var p3 = document.getElementById('ai-p3').value.trim();
+  var parts = name.split(' ');
+  var ini = parts.length>=2 ? (parts[0][0]+parts[parts.length-1][0]).toUpperCase() : name.slice(0,2).toUpperCase();
+  document.getElementById('amb-av').textContent = ini;
+  document.getElementById('amb-name').textContent = name;
+  document.getElementById('amb-dept').textContent = dept;
+  document.getElementById('amb-quote').textContent = quote;
+  document.getElementById('amb-lbl').textContent = 'Ambasador měsíce · '+(month||'tento měsíc');
+  var fn = name.split(' ')[0];
+  var picks = [p1,p2,p3].filter(Boolean);
+  var picksHtml = picks.length
+    ? '<span class="amb-hint">'+fn+' navrhla pro hlasování →</span>'
+      + picks.map(function(p){ return '<button class="amb-pick" onclick="showTab(\'hlasovani\')">'+p+'</button>'; }).join('')
+    : '';
+  document.getElementById('amb-picks').innerHTML = picksHtml;
+  document.getElementById('amb-strip').style.display = 'flex';
+  alert('Ambasador uložen ✓');
+}
+
+function renderSbirky() {
+  var sl = {'active':'Aktivní','vote':'V hlasování','done':'Dokončená'};
+  var sc = {'active':'s-a','vote':'s-v','done':'s-d'};
+  document.getElementById('adm-sbirky').innerHTML = sbirky.map(function(s) {
+    return '<div class="sr">'
+      +'<div class="si"><strong>'+s.tit+'</strong><span>'+s.org+' · '+s.cat+' · '+s.goal.toLocaleString('cs-CZ')+' Kč · '+s.month+'</span></div>'
+      +'<span class="stag '+sc[s.st]+'">'+sl[s.st]+'</span>'
+      +'<div style="display:flex;gap:.4rem;flex-wrap:wrap">'
+      +'<button class="btn" style="font-size:11px;padding:5px 10px" onclick="setSt('+s.id+',\'active\')">Aktivovat</button>'
+      +'<button class="btn" style="font-size:11px;padding:5px 10px" onclick="setSt('+s.id+',\'vote\')">Do hlasování</button>'
+      +'<button class="btn" style="font-size:11px;padding:5px 10px" onclick="setSt('+s.id+',\'done\')">Dokončit</button>'
+      +'<button class="btn d" style="font-size:11px;padding:5px 10px" onclick="delS('+s.id+')">Smazat</button>'
+      +'</div></div>';
+  }).join('');
+}
+function setSt(id, st) {
+  var s = sbirky.find(function(x){ return x.id===id; });
+  if (!s) return;
+  s.st = st;
+  if (st === 'active') {
+    document.getElementById('act-title').textContent = s.tit;
+    document.getElementById('act-sub').textContent = s.org+' · '+s.desc;
+    document.getElementById('act-tgt').textContent = s.goal.toLocaleString('cs-CZ');
+    target = s.goal; contributed = 0;
+    document.getElementById('act-amt').textContent = '0 Kč';
+    document.getElementById('pb').style.width = '0%';
+    document.getElementById('pct').textContent = '0 % splněno';
+    document.getElementById('tfill').setAttribute('y', 121);
+    document.getElementById('tfill').setAttribute('height', 0);
+  }
+  renderSbirky();
+}
+function delS(id) {
+  if (!confirm('Smazat tuto sbírku?')) return;
+  sbirky = sbirky.filter(function(x){ return x.id!==id; });
+  renderSbirky();
+}
+function addSbirka() {
+  var tit  = document.getElementById('ai-tit').value.trim();
+  var goal = parseInt(document.getElementById('ai-goal').value);
+  var url  = document.getElementById('ai-url').value.trim();
+  var err  = document.getElementById('ai-err');
+  err.style.display = 'none';
+  if (!tit)       { err.textContent='Vyplňte název.'; err.style.display='block'; return; }
+  if (!goal||goal<1){ err.textContent='Vyplňte cíl.'; err.style.display='block'; return; }
+  if (!url)       { err.textContent='Vyplňte odkaz.'; err.style.display='block'; return; }
+  var newId = nid++;
+  var st = document.getElementById('ai-status').value;
+  sbirky.push({id:newId,tit:tit,org:document.getElementById('ai-org').value,cat:document.getElementById('ai-cat').value,goal:goal,month:document.getElementById('ai-month2').value,url:url,desc:document.getElementById('ai-desc').value.trim(),st:st});
+  clearForm(); renderSbirky();
+  if (st==='active') setSt(newId,'active');
+}
+function clearForm() {
+  ['ai-tit','ai-goal','ai-url','ai-desc'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('ai-status').value = 'active';
+  document.getElementById('ai-err').style.display = 'none';
+}
+</script>
+</body>
+</html>
